@@ -51,8 +51,8 @@ function echolink_ess_get_rest_courses($moodleCourse = null, $defaultFilter = nu
                 $courseJSON = convertXMLtoJSON($courseXML, true, true);
 
                 $courseFilterHTML = "<div id='headerDiv'>" .
+                                      "<div id='headerData'><h3 style='text-align:left;'>Echo360 Courses | Sections | Presentations</h3></div>" . 
                                       "<div style='float: right;'>Show By: <select name='SHOW_BY_FILTER' id='show_by_filter'><option value='show_all_ess_courses'>All Available Echo360 Courses</option><option value='show_my_ess_courses'>My Echo360 Courses</option></select></div>" .
-                                      "<div id='headerData'><h3>Echo360 Courses | Sections | Presentations</h3></div>" . 
                                     "</div>"; 
 
                 if($courseJSON['total-results'] == 0) {
@@ -127,8 +127,8 @@ function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = nul
 
 				if($defaultFilter == '0') {
                                 	$courseFilterHTML = "<div id='headerDiv'>" .
+                                      			      "<div id='headerData'><h3 style='text-align:left;'>Echo360 Courses | Sections | Presentations</h3></div>" . 
                                         	              "<div style='float: right;'>Show By: <select name='SHOW_BY_FILTER' id='show_by_filter'><option value='show_all_ess_courses'>All Available Echo360 Courses</option><option value='show_my_ess_courses' selected>My Echo360 Courses</option></select></div>" .
-                                                	      "<div id='headerData'><h3>Echo360 Courses | Sections | Presentations</h3></div>" .
 	                                                    "</div>";
 				}
 

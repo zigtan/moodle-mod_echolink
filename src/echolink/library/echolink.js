@@ -142,8 +142,16 @@ M.mod_echolink.init = function(Y, args) {
 		// Check if selected Echo360 Link is for ECP or Presentation
 		if(e.target.get('id').indexOf('ess/portal/section/') != -1) {			// ESS ECP Link
 
-			document.getElementById('id_name').value = document.getElementById(e.target.get('id')).innerHTML;	// Update Echo360 Link Name field but allow user to customise it if required
-			document.getElementById('id_externalecholink').value = e.target.get('id');				// Update Echo360 Link URL field -- read-only, cannot be customised
+			document.getElementById('id_name').value = document.getElementById(e.target.get('id')).innerHTML;		// Update Echo360 Link Name field but allow user to customise it if required
+
+			document.getElementById('externalecholink').value = e.target.get('id');						// Update Echo360 Link URL field -- read-only, cannot be customised
+			
+			if(document.getElementById('previousecholink').value != null && document.getElementById('previousecholink').value != "") {
+				document.getElementById(document.getElementById('previousecholink').value).removeAttribute("style");	// Remove highlight for previous Echo360 Link URL clicked
+			}	
+
+			document.getElementById('previousecholink').value = document.getElementById('externalecholink').value;		// Store the previous Echo360 Link URL - to track the highlight changes from clicks
+			document.getElementById(e.target.get('id')).style.color="red";
 
 		} else {									// ESS Presentation ID
 			var essPresentationUUID = e.target.get('id');
@@ -188,8 +196,15 @@ M.mod_echolink.init = function(Y, args) {
 							presentationURL = presentationPodcastURL;
 						}
 
-						document.getElementById('id_name').value = document.getElementById(e.target.get('id')).innerHTML;	// Update Echo360 Link Name field but allow user to customise it if required
-						document.getElementById('id_externalecholink').value = presentationURL;					// Update Echo360 Link URL field -- read-only, cannot be customised
+						document.getElementById('id_name').value = document.getElementById(e.target.get('id')).innerHTML;		// Update Echo360 Link Name field but allow user to customise it if required
+						document.getElementById('externalecholink').value = presentationURL;						// Update Echo360 Link URL field -- read-only, cannot be customised
+
+						if(document.getElementById('previousecholink').value != null && document.getElementById('previousecholink').value != "") {
+							document.getElementById(document.getElementById('previousecholink').value).removeAttribute("style");	// Remove highlight for previous Echo360 Link URL clicked
+						}	
+
+						document.getElementById('previousecholink').value = e.target.get('id');						// Store the previous Echo360 Link URL - to track the highlight changes from clicks
+						document.getElementById(e.target.get('id')).style.color="red";
                 	                 },  
                         	failure: function(o) {
 	                                        console.log("Failure: " + o.toSource()); 

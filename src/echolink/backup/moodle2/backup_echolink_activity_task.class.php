@@ -61,17 +61,20 @@ class backup_echolink_activity_task extends backup_activity_task {
 
         //Access a list of all links in a course
         $pattern = '#('.$base.'/index\.php\?id=)([0-9]+)#';
-        $replacement = '$@EchoLinkINDEX*$2@$';
+//        $replacement = '$@EchoLinkINDEX*$2@$';
+        $replacement = '$@ECHOLINKINDEX*$2@$';
         $content = preg_replace($pattern, $replacement, $content);
 
         //Access the link supplying a course module id
         $pattern = '#('.$base.'/view\.php\?id=)([0-9]+)#';
-        $replacement = '$@EchoLinkVIEWBYID*$2@$';
+//        $replacement = '$@EchoLinkVIEWBYID*$2@$';
+        $replacement = '$@ECHOLINKVIEWBYID*$2@$';
         $content = preg_replace($pattern, $replacement, $content);
 
         //Access the link supplying an instance id
         $pattern = '#('.$base.'/view\.php\?u=)([0-9]+)#';
-        $replacement = '$@EchoLinkVIEWBYU*$2@$';
+//        $replacement = '$@EchoLinkVIEWBYU*$2@$';
+        $replacement = '$@ECHOLINKVIEWBYU*$2@$';
         $content = preg_replace($pattern, $replacement, $content);
 
         return $content;

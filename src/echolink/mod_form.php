@@ -66,9 +66,12 @@ class mod_echolink_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
-        $mform->addElement('text', 'externalecholink', get_string('externalecholink', 'echolink'), array('size'=>'128', 'readonly'=>'true'));
+        $mform->addElement('hidden', 'externalecholink', '', array('id'=>'externalecholink'));
         $mform->setType('externalecholink', PARAM_URL);
         $mform->addRule('externalecholink', null, 'required', null, 'client');
+	
+        $mform->addElement('hidden', 'previousecholink', '', array('id'=>'previousecholink'));
+
 	$this->add_intro_editor($config->requiremodintro);
 
         //-------------------------------------------------------
@@ -100,81 +103,10 @@ class mod_echolink_mod_form extends moodleform_mod {
                   );
 
         $PAGE->requires->js_init_call('M.mod_echolink.init', $params, false, $module);
-
-//        $mform->setExpanded('echosystemcontent');
-        //-------------------------------------------------------
-
-        //-------------------------------------------------------
-//        $mform->addElement('header', 'general', get_string('general', 'form'));
-//        $mform->addElement('text', 'name', get_string('name'), array('size'=>'48'));
-//        if (!empty($CFG->formatstringstriptags)) {
-//            $mform->setType('name', PARAM_TEXT);
-//        } else {
-//            $mform->setType('name', PARAM_CLEANHTML);
-//        }
-//        $mform->addRule('name', null, 'required', null, 'client');
-//        $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
-//        $this->add_intro_editor($config->requiremodintro);
-
-        //-------------------------------------------------------
-//        $mform->addElement('header', 'content', get_string('contentheader', 'echolink'));
-//        $mform->addElement('echolink', 'externalecholink', get_string('externalecholink', 'echolink'), array('size'=>'60'), array('usefilepicker'=>true));
-//        $mform->setType('externalecholink', PARAM_URL);
-//        $mform->addRule('externalecholink', null, 'required', null, 'client');
-//        $mform->setExpanded('content');
-
+        $mform->setExpanded('echosystemcontent');
 /**
+**/
         //-------------------------------------------------------
-        $mform->addElement('header', 'optionssection', get_string('appearance'));
-
-        if ($this->current->instance) {
-            $options = resourcelib_get_displayoptions(explode(',', $config->displayoptions), $this->current->display);
-        } else {
-            $options = resourcelib_get_displayoptions(explode(',', $config->displayoptions));
-        }
-        if (count($options) == 1) {
-            $mform->addElement('hidden', 'display');
-            $mform->setType('display', PARAM_INT);
-            reset($options);
-            $mform->setDefault('display', key($options));
-        } else {
-            $mform->addElement('select', 'display', get_string('displayselect', 'echolink'), $options);
-            $mform->setDefault('display', $config->display);
-            $mform->addHelpButton('display', 'displayselect', 'echolink');
-        }
-
-        if (array_key_exists(RESOURCELIB_DISPLAY_POPUP, $options)) {
-            $mform->addElement('text', 'popupwidth', get_string('popupwidth', 'echolink'), array('size'=>3));
-            if (count($options) > 1) {
-                $mform->disabledIf('popupwidth', 'display', 'noteq', RESOURCELIB_DISPLAY_POPUP);
-            }
-            $mform->setType('popupwidth', PARAM_INT);
-            $mform->setDefault('popupwidth', $config->popupwidth);
-
-            $mform->addElement('text', 'popupheight', get_string('popupheight', 'echolink'), array('size'=>3));
-            if (count($options) > 1) {
-                $mform->disabledIf('popupheight', 'display', 'noteq', RESOURCELIB_DISPLAY_POPUP);
-            }
-            $mform->setType('popupheight', PARAM_INT);
-            $mform->setDefault('popupheight', $config->popupheight);
-        }
-
-        if (array_key_exists(RESOURCELIB_DISPLAY_AUTO, $options) or
-          array_key_exists(RESOURCELIB_DISPLAY_EMBED, $options) or
-          array_key_exists(RESOURCELIB_DISPLAY_FRAME, $options)) {
-            $mform->addElement('checkbox', 'printheading', get_string('printheading', 'echolink'));
-            $mform->disabledIf('printheading', 'display', 'eq', RESOURCELIB_DISPLAY_POPUP);
-            $mform->disabledIf('printheading', 'display', 'eq', RESOURCELIB_DISPLAY_OPEN);
-            $mform->disabledIf('printheading', 'display', 'eq', RESOURCELIB_DISPLAY_NEW);
-            $mform->setDefault('printheading', $config->printheading);
-
-            $mform->addElement('checkbox', 'printintro', get_string('printintro', 'echolink'));
-            $mform->disabledIf('printintro', 'display', 'eq', RESOURCELIB_DISPLAY_POPUP);
-            $mform->disabledIf('printintro', 'display', 'eq', RESOURCELIB_DISPLAY_OPEN);
-            $mform->disabledIf('printintro', 'display', 'eq', RESOURCELIB_DISPLAY_NEW);
-            $mform->setDefault('printintro', $config->printintro);
-        }
-/**/
 
         //-------------------------------------------------------
         $this->standard_coursemodule_elements();
