@@ -107,6 +107,49 @@ class mod_echolink_mod_form extends moodleform_mod {
 /**
 **/
         //-------------------------------------------------------
+        $mform->addElement('header', 'optionssection', get_string('appearance'));
+
+        if ($this->current->instance) {
+            $options = resourcelib_get_displayoptions(explode(',', $config->displayoptions), $this->current->display);
+        } else {
+            $options = resourcelib_get_displayoptions(explode(',', $config->displayoptions));
+        }
+        if (count($options) == 1) {
+            $mform->addElement('hidden', 'display');
+            $mform->setType('display', PARAM_INT);
+            reset($options);
+            $mform->setDefault('display', key($options));
+        } else {
+            $mform->addElement('select', 'display', get_string('displayselect', 'url'), $options);
+            $mform->setDefault('display', $config->display);
+            $mform->addHelpButton('display', 'displayselect', 'url');
+        }   
+
+        if (array_key_exists(RESOURCELIB_DISPLAY_POPUP, $options)) {
+            $mform->addElement('text', 'popupwidth', get_string('popupwidth', 'url'), array('size'=>3));
+            if (count($options) > 1) {
+                $mform->disabledIf('popupwidth', 'display', 'noteq', RESOURCELIB_DISPLAY_POPUP);
+            }   
+            $mform->setType('popupwidth', PARAM_INT);
+            $mform->setDefault('popupwidth', $config->popupwidth);
+
+            $mform->addElement('text', 'popupheight', get_string('popupheight', 'url'), array('size'=>3));
+            if (count($options) > 1) {
+                $mform->disabledIf('popupheight', 'display', 'noteq', RESOURCELIB_DISPLAY_POPUP);
+            }   
+            $mform->setType('popupheight', PARAM_INT);
+            $mform->setDefault('popupheight', $config->popupheight);
+        }   
+
+        if (array_key_exists(RESOURCELIB_DISPLAY_AUTO, $options) or
+          array_key_exists(RESOURCELIB_DISPLAY_EMBED, $options) or
+          array_key_exists(RESOURCELIB_DISPLAY_FRAME, $options)) {
+            $mform->addElement('checkbox', 'printintro', get_string('printintro', 'url'));
+            $mform->disabledIf('printintro', 'display', 'eq', RESOURCELIB_DISPLAY_POPUP);
+            $mform->disabledIf('printintro', 'display', 'eq', RESOURCELIB_DISPLAY_OPEN);
+            $mform->disabledIf('printintro', 'display', 'eq', RESOURCELIB_DISPLAY_NEW);
+            $mform->setDefault('printintro', $config->printintro);
+        }
 
         //-------------------------------------------------------
         $this->standard_coursemodule_elements();
