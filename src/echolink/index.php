@@ -20,7 +20,7 @@
  *
  * @package    mod
  * @subpackage echolink
- * @copyright  2009 onwards Martin Dougiamas (http://dougiamas.com)
+ * @copyright  (c) 2013, Echo360 Inc.  www.echo360.com
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
