@@ -29,6 +29,8 @@
 require_once('../../../config.php');
 require_once($CFG->dirroot.'/mod/echolink/locallib.php');
 
+$PAGE->set_context(context_system::instance());
+
 $course_uuid = optional_param('course_uuid', '', PARAM_TEXT);
 $defaultFilter = optional_param('defaultFilter', '', PARAM_TEXT);
 $moodle_user = optional_param('moodle_user', '', PARAM_TEXT);

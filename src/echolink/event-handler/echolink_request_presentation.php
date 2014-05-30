@@ -22,6 +22,8 @@
 require_once('../../../config.php');
 require_once($CFG->dirroot.'/mod/echolink/locallib.php');
 
+$PAGE->set_context(context_system::instance());
+
 $presentation_uuid = optional_param('presentation_uuid', '', PARAM_TEXT);
 if(!empty($presentation_uuid)) {
     echo echolink_ess_get_rest_presentation($presentation_uuid);

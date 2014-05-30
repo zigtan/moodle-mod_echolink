@@ -29,6 +29,8 @@
 require_once('../../../config.php');
 require_once($CFG->dirroot.'/mod/echolink/locallib.php');
 
+$PAGE->set_context(context_system::instance());
+
 $section_uuid = optional_param('section_uuid', '', PARAM_TEXT);
 if(!empty($section_uuid)) {
     // Make two REST calls to retrieve the Section's ECP link and the Presentation links
