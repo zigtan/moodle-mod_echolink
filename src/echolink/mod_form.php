@@ -39,14 +39,14 @@ class mod_echolink_mod_form extends moodleform_mod {
 	$moodleCourse = "";
 
         if($config->Moodle_External_ID == "moodle_short_name_course") {
-                $moodleCourse = $COURSE->shortname;    
+                $moodleCourse = $COURSE->shortname;
         } else if($config->Moodle_External_ID == "moodle_full_name_course") {
                 $moodleCourse = $COURSE->fullname;
         } else if($config->Moodle_External_ID == "moodle_id_number_course") {
                 $moodleCourse = $COURSE->idnumber;
         } else if($config->Moodle_External_ID == "moodle_database_id_course") {
                 $moodleCourse = $COURSE->id;
-        }   
+        }
 
         $moodleUser = $USER->username;
 
@@ -55,7 +55,7 @@ class mod_echolink_mod_form extends moodleform_mod {
                 $mform->addElement('header', 'general', $config->Display_Label);
         } else {
                 $mform->addElement('header', 'general', get_string('echolink', 'echolink'));
-        }   
+        }
 
         $mform->addElement('text', 'name', get_string('name', 'echolink'), array('size'=>'128'));
         if (!empty($CFG->formatstringstriptags)) {
@@ -69,7 +69,7 @@ class mod_echolink_mod_form extends moodleform_mod {
         $mform->addElement('hidden', 'externalecholink', '', array('id'=>'externalecholink'));
         $mform->setType('externalecholink', PARAM_URL);
         $mform->addRule('externalecholink', null, 'required', null, 'client');
-	
+
         $mform->addElement('hidden', 'previousecholink', '', array('id'=>'previousecholink'));
 
 	$this->add_intro_editor($config->requiremodintro);
@@ -123,23 +123,23 @@ class mod_echolink_mod_form extends moodleform_mod {
             $mform->addElement('select', 'display', get_string('displayselect', 'url'), $options);
             $mform->setDefault('display', $config->display);
             $mform->addHelpButton('display', 'displayselect', 'url');
-        }   
+        }
 
         if (array_key_exists(RESOURCELIB_DISPLAY_POPUP, $options)) {
             $mform->addElement('text', 'popupwidth', get_string('popupwidth', 'url'), array('size'=>3));
             if (count($options) > 1) {
                 $mform->disabledIf('popupwidth', 'display', 'noteq', RESOURCELIB_DISPLAY_POPUP);
-            }   
+            }
             $mform->setType('popupwidth', PARAM_INT);
             $mform->setDefault('popupwidth', $config->popupwidth);
 
             $mform->addElement('text', 'popupheight', get_string('popupheight', 'url'), array('size'=>3));
             if (count($options) > 1) {
                 $mform->disabledIf('popupheight', 'display', 'noteq', RESOURCELIB_DISPLAY_POPUP);
-            }   
+            }
             $mform->setType('popupheight', PARAM_INT);
             $mform->setDefault('popupheight', $config->popupheight);
-        }   
+        }
 
         if (array_key_exists(RESOURCELIB_DISPLAY_AUTO, $options) or
           array_key_exists(RESOURCELIB_DISPLAY_EMBED, $options) or
