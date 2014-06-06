@@ -669,7 +669,7 @@ function echolink_display_embed($echolink, $cm, $course) {
 
     $link = html_writer::tag('a', $fullecholink, array('href'=>str_replace('&amp;', '&', $fullecholink)));
     $clicktoopen = get_string('clicktoopen', 'echolink', $link);
-    $moodleecholink = new moodle_echolink($fullecholink);
+    $moodleecholink = new moodle_url($fullecholink);
 
     $extension = resourcelib_get_extension($echolink->externalecholink);
 
@@ -682,9 +682,9 @@ function echolink_display_embed($echolink, $cm, $course) {
     if (in_array($mimetype, array('image/gif','image/jpeg','image/png'))) {  // It's an image
         $code = resourcelib_embed_image($fullecholink, $title);
 
-    } else if ($mediarenderer->can_embed_echolink($moodleecholink, $embedoptions)) {
+    } else if ($mediarenderer->can_embed_url($moodleecholink, $embedoptions)) {
         // Media (audio/video) file.
-        $code = $mediarenderer->embed_echolink($moodleecholink, $title, 0, 0, $embedoptions);
+        $code = $mediarenderer->embed_url($moodleecholink, $title, 0, 0, $embedoptions);
 
     } else {
         // anything else - just try object tag enlarged as much as possible
