@@ -47,7 +47,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox('echolink/Display_Listing', get_string('displaylistingoption', 'echolink'), get_string('displaylistingoptionexplain', 'echolink'), false));
 
     // EchoSystem Moodle External Id Field
-    $defaultEchoSystemMoodleExternalIdOption = 1;
+    $defaultEchoSystemMoodleExternalIdOption = 'moodle_short_name_course';
     $displayEchoSystemMoodleExternalIdOptions = array('moodle_short_name_course'=>get_string('moodle_short_name_course', 'echolink'),
                                                       'moodle_full_name_course'=>get_string('moodle_full_name_course', 'echolink'),
                                                       'moodle_id_number_course'=>get_string('moodle_id_number_course', 'echolink'),

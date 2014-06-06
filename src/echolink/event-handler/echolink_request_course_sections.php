@@ -30,6 +30,8 @@
 require_once('../../../config.php');
 require_once($CFG->dirroot.'/mod/echolink/locallib.php');
 
+$PAGE->set_context(context_system::instance());
+
 $course_uuid = optional_param('course_uuid', '', PARAM_TEXT);
 if(!empty($course_uuid)) {
     echo echolink_ess_get_rest_course_sections($course_uuid);
