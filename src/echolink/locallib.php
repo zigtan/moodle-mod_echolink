@@ -45,65 +45,65 @@ function echolink_ess_get_rest_courses($moodleCourse = null, $defaultFilter = nu
         global $ESS_API_PATH, $ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET;
 
         // Retrieve ESS Course XML
-        $courseXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "courses", "", "GET", array());    
+        $courseXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "courses", "", "GET", array());
 
         if($courseXML != null || $courseXML != '') {
                 $courseJSON = convertXMLtoJSON($courseXML, true, true);
 
                 $courseFilterHTML = "<div id='headerDiv'>" .
-                                      "<div id='headerData'><h3 style='text-align:left;'>Echo360 Courses | Sections | Presentations</h3></div>" . 
+                                      "<div id='headerData'><h3 style='text-align:left;'>Echo360 Courses | Sections | Presentations</h3></div>" .
                                       "<div style='float: right;'>Show By: <select name='SHOW_BY_FILTER' id='show_by_filter'><option value='show_all_ess_courses'>All Available Echo360 Courses</option><option value='show_my_ess_courses'>My Echo360 Courses</option></select></div>" .
-                                    "</div>"; 
+                                    "</div>";
 
                 if($courseJSON['total-results'] == 0) {
-                        return "<div id='echoLinkFormDiv'>" . 
-                                  $courseFilterHTML . 
-                                 "<div id='courseDiv'>" . 
+                        return "<div id='echoLinkFormDiv'>" .
+                                  $courseFilterHTML .
+                                 "<div id='courseDiv'>" .
                                    "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>" .
                                      "<div class='courseRecord'>No EchoSystem Courses are currently available.</div>" .
-                                   "</div>" . 
-                                 "</div>" .   
-                               "</div>"; 
+                                   "</div>" .
+                                 "</div>" .
+                               "</div>";
                 } else if($courseJSON['total-results'] == 1) {
                         $id = $courseJSON['course']['id'];
                         $name = $courseJSON['course']['name'] . " (" . $courseJSON['course']['identifier'] . ")";
 
                         return "<div id='echoLinkFormDiv'>" .
-                                 $courseFilterHTML . 
-                                 "<div id='courseDiv'>" . 
+                                 $courseFilterHTML .
+                                 "<div id='courseDiv'>" .
                                    "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>" .
                                      "<div class='courseRecord' id='$id'>" .
                                        "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" . 
                                        "<div class='sectionDiv' id='$id'></div>" .
                                      "</div>" .
                                    "</div>" .
-                                 "</div>" .   
-                               "</div>"; 
+                                 "</div>" .
+                               "</div>";
                 } else {
                         $courseData = array();
                         foreach($courseJSON['course'] as $course) {
                                 $courseData[$course['id']] = $course['name'] . " (" . $course['identifier'] . ")";
-                        }   
+                        }
                         asort($courseData);
 
-                        $courseHTML = "<div id='echoLinkFormDiv'>" . 
-                                        $courseFilterHTML . 
-                                        "<div id='courseDiv'>" . 
-                                          "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>"; 
+                        $courseHTML = "<div id='echoLinkFormDiv'>" .
+                                        $courseFilterHTML .
+                                        "<div id='courseDiv'>" .
+                                          "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>";
                         foreach($courseData as $id => $name) {
                                 $courseHTML .= "<div class='courseRecord' id='$id'>" .
                                                   "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" . 
                                                   "<div class='sectionDiv' id='$id'></div>" .
                                                "</div>";
-                        }   
+                        }
                         $courseHTML .=    "</div>" .
                                         "</div>" .
                                       "</div>";
-                        return $courseHTML;    
-                }   
+                        return $courseHTML;
+                }
         } else {
                 return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Communication error with the configured EchoSystem Server.<br />Please contact your EchoSystem Administrators for assistance.</div>";
-        } 
+        }
 }// end of echolink_ess_get_rest_courses function
 
 
@@ -127,7 +127,7 @@ function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = nul
 
 				if($defaultFilter == '0') {
                                 	$courseFilterHTML = "<div id='headerDiv'>" .
-                                      			      "<div id='headerData'><h3 style='text-align:left;'>Echo360 Courses | Sections | Presentations</h3></div>" . 
+                                                            "<div id='headerData'><h3 style='text-align:left;'>Echo360 Courses | Sections | Presentations</h3></div>" .
                                         	              "<div style='float: right;'>Show By: <select name='SHOW_BY_FILTER' id='show_by_filter'><option value='show_all_ess_courses'>All Available Echo360 Courses</option><option value='show_my_ess_courses' selected>My Echo360 Courses</option></select></div>" .
 	                                                    "</div>";
 				}
@@ -149,7 +149,7 @@ function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = nul
                                                 return "<div id='echoLinkFormDiv'>" .
                                                           $courseFilterHTML .
                                                  	  "<div id='courseDiv'>" .
-	                                                    "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>" . 
+	                                                    "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>" .
 			                                      "<div class='courseRecord' id='$id'>" .
 			                                        "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" .
 			                                        "<div class='sectionDiv' id='$id'></div>" .
@@ -169,7 +169,7 @@ function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = nul
 							$courseFilterHTML .
 							"<div id='courseDiv'>" .
 							   "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>";
-                                                
+
 					foreach($sectionRoleData as $id => $name) {
 						$courseHTML .= "<div class='courseRecord' id='$id'>" .
 									"<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" .
@@ -231,7 +231,7 @@ function echolink_ess_get_rest_course_sections($essCourse) {
         } else {
                 return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Communication error with the configured EchoSystem Server.<br />Please contact your EchoSystem Administrators for assistance.</div>";
         }
-}// end of echolink_ess_get_rest_course_sections function 
+}// end of echolink_ess_get_rest_course_sections function
 
 
 function echolink_ess_get_rest_section($essSection) {
@@ -288,19 +288,19 @@ function echolink_ess_get_rest_section_presentations($essSection) {
                         foreach($sectionPresentationJSON['presentation'] as $presentation) {
                                 if($presentation['status'] == "presentation-status-available") {
                                         $presentationData[$presentation['id']] = date("Y-m-d H:i", strtotime($presentation['start-time'])) . " ||--|| " . $presentation['title'];
-                                }   
-                        }   
-                        asort($presentationData);    
+                                }
+                        }
+                        asort($presentationData);
 
                         $presentationHTML = "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'>";
-                        foreach($presentationData as $id => $title) { 
+                        foreach($presentationData as $id => $title) {
                                 $_title = explode(" ||--|| ", $title);
                                 $presentationHTML .= "<div class='presentationRecord'>&#8226; <span style='color: gray;'>" . $_title[0] . "</span> - <i><a href='#' class='ess_presentation_link' id='$id'>" . $_title[1] . "</a></i>";
-                        }   
+                        }
                         $presentationHTML .= "</div>";
 
                         return $presentationHTML;
-                }   
+                }
         } else {
                 // Do nothing - error message would have already been displayed
         }
@@ -353,25 +353,25 @@ function echolink_ess_oauth_seamless_login($echolink) {
         if($ssoResponse['success'] == true) {
             // we want to test for a 404
             $curl = $essSSOLogin->get_curl_with_defaults();
-            $headers = $essSSOLogin->get_headers($curl, $ssoResponse['url'], 1); 
+            $headers = $essSSOLogin->get_headers($curl, $ssoResponse['url'], 1);
     
             if (!strstr($headers[0]['http'], "302")) {
                 $error_message = 'unexpected_response';
-                $e = explode(" ", $headers[0]['http'], 3); 
+                $e = explode(" ", $headers[0]['http'], 3);
                 $error_detail = $e[2];
             } else if (strstr($headers[1]['http'], "404")) {
                 $error_message = 'not_found_response';
-                $e = explode(" ", $headers[1]['http'], 3); 
+                $e = explode(" ", $headers[1]['http'], 3);
                 $error_detail = $e[2];
             } else if (strstr($headers[1]['http'], "403")) {
                 $error_message = 'forbidden_response';
-                $e = explode(" ", $headers[1]['http'], 3); 
+                $e = explode(" ", $headers[1]['http'], 3);
                 $error_detail = $e[2];
             } else if (!strstr($headers[1]['http'], "200")) {
                 $error_message = 'unexpected_response';
-                $e = explode(" ", $headers[1]['http'], 3); 
+                $e = explode(" ", $headers[1]['http'], 3);
                 $error_detail = $e[2];
-            }   
+            }
             curl_close($curl);
 
 	    if ($error_message == "") {
@@ -859,7 +859,7 @@ function echolink_get_variable_values($echolink, $cm, $course, $config) {
         $values['useraddress']     = $USER->address;
         $values['usercity']        = $USER->city;
         $values['usertimezone']    = get_user_timezone_offset();
-        $values['userecholink']         = $USER->echolink;
+        $values['userecholink']    = $USER->echolink;
     }
 
     // weak imitation of Single-Sign-On, for backwards compatibility only

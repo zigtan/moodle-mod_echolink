@@ -63,12 +63,12 @@ class mod_echolink_mod_form extends moodleform_mod {
         } else {
             $mform->setType('name', PARAM_CLEANHTML);
         }
-        $mform->addRule('name', null, 'required', null, 'client');
+
+        //$mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
         $mform->addElement('hidden', 'externalecholink', '', array('id'=>'externalecholink'));
         $mform->setType('externalecholink', PARAM_URL);
-        $mform->addRule('externalecholink', null, 'required', null, 'client');
 	
         $mform->addElement('hidden', 'previousecholink', '', array('id'=>'previousecholink'));
 
@@ -195,21 +195,21 @@ class mod_echolink_mod_form extends moodleform_mod {
 
         // NOTE: do not try to explain the difference between URL and URI, people would be only confused...
 
-        if (empty($data['externalecholink'])) {
-            $errors['externalecholink'] = get_string('required');
-
+        if (empty($data['name'])) {
+	    $errors['name'] = get_string('nonameecholink', 'echolink'); 
+        } else if (empty($data['externalecholink'])) {
+	    $errors['name'] = get_string('noselectedecholink', 'echolink'); 
         } else {
             $echolink = trim($data['externalecholink']);
             if (empty($echolink)) {
-                $errors['externalecholink'] = get_string('required');
-
+	    	$errors['name'] = get_string('noselectedecholink', 'echolink'); 
             } else if (preg_match('|^/|', $echolink)) {
                 // links relative to server root are ok - no validation necessary
 
             } else if (preg_match('|^[a-z]+://|i', $echolink) or preg_match('|^https?:|i', $echolink) or preg_match('|^ftp:|i', $echolink)) {
                 // normal URL
                 if (!echolink_appears_valid_echolink($echolink)) {
-                    $errors['externalecholink'] = get_string('invalidecholink', 'echolink');
+                    $errors['name'] = get_string('invalidecholink', 'echolink');
                 }
 
             } else if (preg_match('|^[a-z]+:|i', $echolink)) {
@@ -220,11 +220,11 @@ class mod_echolink_mod_form extends moodleform_mod {
                 // invalid URI, we try to fix it by adding 'http://' prefix,
                 // relative links are NOT allowed because we display the link on different pages!
                 if (!echolink_appears_valid_echolink('http://'.$echolink)) {
-                    $errors['externalecholink'] = get_string('invalidecholink', 'echolink');
+                    $errors['name'] = get_string('invalidecholink', 'echolink');
                 }
             }
         }
+
         return $errors;
     }
-
 }

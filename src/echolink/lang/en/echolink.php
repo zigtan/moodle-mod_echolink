@@ -42,12 +42,14 @@ $string['displayselect_help'] = 'This setting, together with the EchoLink file t
 * In frame - The EchoLink is displayed within a frame below the the navigation bar and EchoLink description
 * New window - The EchoLink is displayed in a new browser window with menus and an address bar';
 $string['displayselectexplain'] = 'Choose display type, unfortunately not all types are suitable for all EchoLinks.';
-$string['name'] = 'Name';
+$string['name'] = 'Display Name';
 $string['externalecholink'] = 'EchoLink';
 $string['framesize'] = 'Frame height';
 $string['invalidstoredecholink'] = 'Cannot display this resource, EchoLink is invalid.';
 $string['chooseavariable'] = 'Choose a variable...';
-$string['invalidecholink'] = 'Entered EchoLink is invalid';
+$string['invalidecholink'] = 'The selected EchoLink is invalid';
+$string['noselectedecholink'] = 'Select EchoLink first before renaming Display Name';
+$string['nonameecholink'] = 'Enter EchoLink Display Name';
 $string['modulename'] = 'EchoLink';
 $string['modulename_help'] = 'The EchoLink module enables a teacher to provide a web link as a course resource. Anything that is freely available online, such as documents or images, can be linked to; the EchoLink doesn’t have to be the home page of a website. The EchoLink of a particular web page may be copied and pasted or a teacher can use the file picker and choose a link from a repository such as Flickr, YouTube or Wikimedia (depending upon which repositories are enabled for the site).
 

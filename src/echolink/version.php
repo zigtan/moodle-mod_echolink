@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$module->version   = 2014031801;       // The current module version (Date: YYYYMMDDXX)
+$module->version   = 2014070201;       // The current module version (Date: YYYYMMDDXX)
 $module->requires  = 2011112900;       // Requires this Moodle version
-$module->component = 'mod_echolink';        // Full name of the plugin (used for diagnostics)
+$module->component = 'mod_echolink';   // Full name of the plugin (used for diagnostics)
 $module->cron      = 0;
