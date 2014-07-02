@@ -27,6 +27,9 @@ This EchoLink module has been successfully tested with Moodle 2.2, 2.3, 2.4, 2.5
 Change Log
 ===================
 
+2 July 2014
+ - Improved warning messages displayed within EchoLink user interface
+
 18 March 2014
  - Fixed bug preventing the use of pop-up, new tab, opening functionality.
 
