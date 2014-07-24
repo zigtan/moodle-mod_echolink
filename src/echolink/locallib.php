@@ -116,75 +116,91 @@ function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = nul
                 if($personXML != null && $personXML != '') {
                         $personJSON = convertXMLtoJSON($personXML, true, true);
 
-                        if($personJSON['total-results'] == 0) {
+                        if($personJSON['total-results'] == 0) {			// If Person record(s) are not found, return warning message no ESS User found for current Moodle User
                                 return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Moodle User '$moodlePerson' is not found in the configured EchoSystem Server.<br />Please contact your EchoSystem Administrators for assistance.</div>";
-                        } else if($personJSON['total-results'] == 1) {          // Else Person UUID is not found, return warning message no ESS User found for current Moodle User
-                                $personUUID = $personJSON['person']['id'];
-                                $sectionRoleXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "presenters/$personUUID/sections", "", "GET", array());
-                                $sectionRoleJSON = convertXMLtoJSON($sectionRoleXML, true, true);
+                        } else if($personJSON['total-results'] >= 1) {          // Else Person record(s) are found
+				$personUUID = "";
 
-				$courseFilterHTML = "";
-
-				if($defaultFilter == '0') {
-                                	$courseFilterHTML = "<div id='headerDiv'>" .
-                                                            "<div id='headerData'><h3 style='text-align:left;'>Echo360 Courses | Sections | Presentations</h3></div>" .
-                                        	              "<div style='float: right;'>Show By: <select name='SHOW_BY_FILTER' id='show_by_filter'><option value='show_all_ess_courses'>All Available Echo360 Courses</option><option value='show_my_ess_courses' selected>My Echo360 Courses</option></select></div>" .
-	                                                    "</div>";
+				if($personJSON['total-results'] == 1) {
+	                                $personUUID = $personJSON['person']['id'];
+				} else {
+					foreach($personJSON['person'] as $person) {
+						if($person['user-name'] == "$moodlePerson") {	
+							$personUUID = $person['id'];
+							break;	
+						}
+					}
 				}
 
-                                if($sectionRoleJSON['total-results'] == 0) {
-                                        return "<div id='echoLinkFormDiv'>" .
-                                                  $courseFilterHTML .
-                                                 "<div id='courseDiv'>" .
-                                                   "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'><div class='courseRecord'>No EchoSystem Courses are currently available for current Moodle User '$moodlePerson'.</div></div>" .
-                                                 "</div>" .
-                                               "</div>";
-                                } else if($sectionRoleJSON['total-results'] == 1) {
-                                        if($sectionRoleJSON['section-role']['course-id'] == "") {
-                                                return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Unable to retrieve EchoSystem Courses for current Moodle User '$moodlePerson' due to EchoSystem API limitations.<br />Please upgrade to EchoSystem 5.3 or higher.</div>";
-                                        } else {
-                                                $id = $sectionRoleJSON['section-role']['course-id'];
-                                                $name = $sectionRoleJSON['section-role']['course-name'] . " (" . $sectionRoleJSON['section-role']['course-identifier'] . ")";
-
-                                                return "<div id='echoLinkFormDiv'>" .
-                                                          $courseFilterHTML .
-                                                 	  "<div id='courseDiv'>" .
-	                                                    "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>" .
-			                                      "<div class='courseRecord' id='$id'>" .
-			                                        "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" .
-			                                        "<div class='sectionDiv' id='$id'></div>" .
-			                                      "</div>" .
-							    "</div>" .
-	                                                  "</div>" .
-                                                       "</div>";
-                                        }
+				if($personUUID == "") {
+					return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Moodle User '$moodlePerson' was not found in the configured EchoSystem Server.<br />Please contact your EchoSystem Administrators for assistance.</div>";
 				} else {
-					$sectionRoleData = array();
-					foreach($sectionRoleJSON['section-role'] as $sectionRole) {
-						$sectionRoleData[$sectionRole['course-id']] = $sectionRole['course-name'] . " (" . $sectionRole['course-identifier'] . ")";
+	                                $sectionRoleXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "presenters/$personUUID/sections", "", "GET", array());
+        	                        $sectionRoleJSON = convertXMLtoJSON($sectionRoleXML, true, true);
+
+					$courseFilterHTML = "";
+
+					if($defaultFilter == '0') {
+        	                        	$courseFilterHTML = "<div id='headerDiv'>" .
+                	                                              "<div id='headerData'><h3 style='text-align:left;'>Echo360 Courses | Sections | Presentations</h3></div>" .
+                        	                	              "<div style='float: right;'>Show By: <select name='SHOW_BY_FILTER' id='show_by_filter'><option value='show_all_ess_courses'>All Available Echo360 Courses</option><option value='show_my_ess_courses' selected>My Echo360 Courses</option></select></div>" .
+		                                                    "</div>";
 					}
-					asort($sectionRoleData);
 
-					$courseHTML = "<div id='echoLinkFormDiv'>" .
-							$courseFilterHTML .
-							"<div id='courseDiv'>" .
-							   "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>";
+                	                if($sectionRoleJSON['total-results'] == 0) {
+                        	                return "<div id='echoLinkFormDiv'>" .
+                                	                  $courseFilterHTML .
+                                        	         "<div id='courseDiv'>" .
+                                                	   "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'><div class='courseRecord'>No EchoSystem Courses are currently available for current Moodle User '$moodlePerson'.</div></div>" .
+	                                                 "</div>" .
+        	                                       "</div>";
+                	                } else if($sectionRoleJSON['total-results'] == 1) {
+                        	                if($sectionRoleJSON['section-role']['course-id'] == "") {
+                                	                return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Unable to retrieve EchoSystem Courses for current Moodle User '$moodlePerson' due to EchoSystem API limitations.<br />Please upgrade to EchoSystem 5.3 or higher.</div>";
+	                                        } else {
+	                                                $id = $sectionRoleJSON['section-role']['course-id'];
+        	                                        $name = $sectionRoleJSON['section-role']['course-name'] . " (" . $sectionRoleJSON['section-role']['course-identifier'] . ")";
 
-					foreach($sectionRoleData as $id => $name) {
-						$courseHTML .= "<div class='courseRecord' id='$id'>" .
-									"<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" .
-									"<div class='sectionDiv' id='$id'></div>" .
-							       "</div>";
+                	                                return "<div id='echoLinkFormDiv'>" .
+	                                                          $courseFilterHTML .
+	                                                 	  "<div id='courseDiv'>" .
+		                                                    "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>" .
+				                                      "<div class='courseRecord' id='$id'>" .
+			        	                                "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" .
+				                                        "<div class='sectionDiv' id='$id'></div>" .
+				                                      "</div>" .
+								    "</div>" .
+	                	                                  "</div>" .
+                                	                       "</div>";
+	                                        }
+					} else {
+						$sectionRoleData = array();
+						foreach($sectionRoleJSON['section-role'] as $sectionRole) {
+							$sectionRoleData[$sectionRole['course-id']] = $sectionRole['course-name'] . " (" . $sectionRole['course-identifier'] . ")";
+						}
+						asort($sectionRoleData);
+
+						$courseHTML = "<div id='echoLinkFormDiv'>" .
+								$courseFilterHTML .
+								"<div id='courseDiv'>" .
+								   "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>";
+
+						foreach($sectionRoleData as $id => $name) {
+							$courseHTML .= "<div class='courseRecord' id='$id'>" .
+										"<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" .
+										"<div class='sectionDiv' id='$id'></div>" .
+								       "</div>";
                                                 }
 
-					$courseHTML .=    "</div>" .
-							"</div>" .
-						       "</div>";
-					return $courseHTML;
+						$courseHTML .=    "</div>" .
+								"</div>" .
+							       "</div>";
+						return $courseHTML;
+					}
 				}
-			} else {
-                                return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Moodle User '$moodlePerson' was not uniquely found in the configured EchoSystem Server.<br />Please contact your EchoSystem Administrators for assistance.</div>";
 			}
+		} else {
+                	return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Communication error with the configured EchoSystem Server.<br />Please contact your EchoSystem Administrators for assistance.</div>";
 		}
 	}
 }
@@ -228,8 +244,6 @@ function echolink_ess_get_rest_course_sections($essCourse) {
 
                         return $courseSectionHTML;
                 }
-        } else {
-                return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Communication error with the configured EchoSystem Server.<br />Please contact your EchoSystem Administrators for assistance.</div>";
         }
 }// end of echolink_ess_get_rest_course_sections function
 
