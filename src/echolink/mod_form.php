@@ -103,9 +103,12 @@ class mod_echolink_mod_form extends moodleform_mod {
                   );
 
         $PAGE->requires->js_init_call('M.mod_echolink.init', $params, false, $module);
-        $mform->setExpanded('echosystemcontent');
-/**
-**/
+
+	// Only expand EchoSystem Content options in Moodle 2.7+ to overcome Moodle bug: https://tracker.moodle.org/browse/MDL-38435
+        if(floatval(substr($CFG->release, 0, 3)) >= 2.7) {      
+                $mform->setExpanded('echosystemcontent');
+        }   
+
         //-------------------------------------------------------
         $mform->addElement('header', 'optionssection', get_string('appearance'));
 
