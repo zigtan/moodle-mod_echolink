@@ -27,6 +27,10 @@ This EchoLink module has been successfully tested with Moodle 2.2, 2.3, 2.4, 2.5
 Change Log
 ===================
 
+5 August 2014
+ - Bug fix to resolve undeclared variable in echolink_ess_get_rest_section() function
+ - Minor improvements user interface
+
 24 July 2014
  - Bug fix to find particular ESS Person user to work with ESS API filtering behaviour
 
