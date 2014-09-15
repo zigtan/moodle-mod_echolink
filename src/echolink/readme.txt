@@ -22,13 +22,14 @@ EchoLink module
 
 EchoLink module is a resource module to provide Moodle Teachers the ability to add Echo360 Links from the configured EchoSystem Server.
 
-This EchoLink module has been successfully tested with Moodle 2.2, 2.3, 2.4, 2.5, 2.6 with EchoSystem 5.3, 5.4.
+This EchoLink module has been successfully tested with Moodle 2.2, 2.3, 2.4, 2.5, 2.6, 2.7 with EchoSystem 5.3, 5.4.
 
 Change Log
 ===================
 
 5 August 2014
  - Bug fix to resolve undeclared variable in echolink_ess_get_rest_section() function
+ - Resolved bug uniquely identifying ESS Person records
  - Minor improvements user interface
 
 24 July 2014
