@@ -30,8 +30,8 @@ if ($ADMIN->fulltree) {
     require_once("$CFG->libdir/resourcelib.php");
 
     $displayoptions = resourcelib_get_displayoptions(array(RESOURCELIB_DISPLAY_AUTO,
-                                                           RESOURCELIB_DISPLAY_EMBED,
-                                                           RESOURCELIB_DISPLAY_FRAME,
+//                                                           RESOURCELIB_DISPLAY_EMBED,
+//                                                           RESOURCELIB_DISPLAY_FRAME,
                                                            RESOURCELIB_DISPLAY_OPEN,
                                                            RESOURCELIB_DISPLAY_NEW,
                                                            RESOURCELIB_DISPLAY_POPUP,
