@@ -57,7 +57,7 @@ class mod_echolink_mod_form extends moodleform_mod {
                 $mform->addElement('header', 'general', get_string('echolink', 'echolink'));
         }   
 
-        $mform->addElement('text', 'name', get_string('name', 'echolink'), array('size'=>'128'));
+        $mform->addElement('text', 'name', get_string('name', 'echolink'), array('size'=>'48'));
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
