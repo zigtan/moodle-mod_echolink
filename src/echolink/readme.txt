@@ -27,6 +27,10 @@ This EchoLink module has been successfully tested with Moodle 2.2, 2.3, 2.4, 2.5
 Change Log
 ===================
 
+10 March 2015
+ - Minor change to resolve when setting cookie, resulting in nonce warnings during seamless authentication to the ESS.
+   (Special thanks to the team at Uni. of Canterbury for investigating and proposing the fix.)
+
 19 December 2014
  - Minor changes to EchoLink UI to standardise Name field length to same setting as Moodle URL module
  - Removed Embed and Display In Frame appearance options since they did not work properly
