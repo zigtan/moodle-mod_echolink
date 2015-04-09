@@ -41,6 +41,7 @@ function callRestService($essURL, $essConsumerKey, $essConsumerSecret, $path, $d
         $result = $request->doRequest(0, $curl_options);
         $data = $result['body'];
     } catch (Exception $e) {
+        error_log('Echo exception: ' . $e->getMessage());
         return '';
     }
 
