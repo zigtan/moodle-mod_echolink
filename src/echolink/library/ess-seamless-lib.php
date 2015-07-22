@@ -31,7 +31,7 @@ include_once($CFG->dirroot."/mod/echolink/library/ess-oauth-lib.php");
  * This class is a wrapper around the EchoSystem Seamless login API
  *
  * @copyright 2011 Echo360 Inc
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later 
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class EchoSystemSeamlessLogin {
 
@@ -123,7 +123,7 @@ class EchoSystemSeamlessLogin {
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_VERBOSE, 1); 
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
         return $ch;
     }// end of get_curl_with_defaults function
 
@@ -162,7 +162,8 @@ class EchoSystemSeamlessLogin {
                     }
                     // get the cookies
                     if ($split[0] === "Set-Cookie") {
-                        $cookie = strtok($split[1], ";");
+                        $cookie = explode(";", $split[1], 2);
+                        $cookie = $cookie[0];
                     }
                 }
                 $header = strtok("\r\n");
@@ -173,7 +174,7 @@ class EchoSystemSeamlessLogin {
         return $headers;
     }// end of get_headers function
 
-    
+
     /**
      * Generate a SSO URL for this course.
      * The response is the same as sign_oauth_request above.
@@ -198,7 +199,7 @@ class EchoSystemSeamlessLogin {
 
         // Generate OAuth URL for seamless login
         $ssoResponse = $this->sign_oauth_request($apiurl, $apiparams, 'GET');
-        
+
         return $ssoResponse;
     }// end of generate_sso_url function
 
