@@ -41,7 +41,7 @@ class EchoSystemSeamlessLogin {
     private $baseURL = "";
     private $consumerKey = "";
     private $consumerSecret = "";
-    private $realm = "";	// Optional realm setting
+    private $realm = "";    // Optional realm setting
     private $sessionkey = "";
 
     /**
@@ -188,12 +188,13 @@ class EchoSystemSeamlessLogin {
     public function generate_sso_url($essURL, $userObject, $isInstructor, $showHeading) {
 
         // This is the Echo360 Link for seamless login access
-	$essURL = $essURL . '?showheading=' . ($show_heading?"true":"false");
-        $essURL .= "&firstname=" . trim($userObject->firstname);
-        $essURL .= "&lastname=" . trim($userObject->lastname);
-        $essURL .= "&email=" . trim($userObject->email);
-        $essURL .= "&instructor=" . ($isInstructor?'true':'false');
-
+        $params = 'showheading=' . ($show_heading?"true":"false");
+        $params .= "&firstname=" . trim($userObject->firstname);
+        $params .= "&lastname=" . trim($userObject->lastname);
+        $params .= "&email=" . trim($userObject->email);
+        $params .= "&instructor=" . ($isInstructor?'true':'false');
+        $essURL .= "?" . urlencode($params);
+        
         $apiurl = $this->baseURL . 'ess/personapi/v1/' . urlencode($userObject->username) . '/session';
         $apiparams = array('redirecturl' => $essURL);
 
