@@ -27,6 +27,12 @@ This EchoLink module has been successfully tested with Moodle 2.2, 2.3, 2.4, 2.5
 Change Log
 ===================
 
+13 August 2015
+ - Bug fix to encode the url parameters which was causing errors on users with special characters in their names.
+ - Bug fix to type on showHeader
+ - Removed moodle1 lib which was causing errors. 
+ - Added error logging for the rest client
+
 10 March 2015
  - Minor change to resolve when setting cookie, resulting in nonce warnings during seamless authentication to the ESS.
    (Special thanks to the team at Uni. of Canterbury for investigating and proposing the fix.)
