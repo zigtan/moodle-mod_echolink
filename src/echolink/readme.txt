@@ -22,13 +22,16 @@ EchoLink module
 
 EchoLink module is a resource module to provide Moodle Teachers the ability to add Echo360 Links from the configured EchoSystem Server.
 
-This EchoLink module has been successfully tested with Moodle 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8 with EchoSystem 5.3, 5.4.
+This EchoLink module has been successfully tested with Moodle 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8 with EchoSystem 5.3, 5.4, 5.5
 
 Change Log
 ===================
 
+10 February 2016
+ - Bug fix for seamless authentication to the ESS when Moodle Users have first names and last names containing spaces
+
 10 March 2015
- - Minor change to resolve when setting cookie, resulting in nonce warnings during seamless authentication to the ESS.
+ - Minor change to resolve when setting cookie, resulting in nonce warnings during seamless authentication to the ESS
    (Special thanks to the team at Uni. of Canterbury for investigating and proposing the fix.)
 
 19 December 2014

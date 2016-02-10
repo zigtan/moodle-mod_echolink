@@ -189,9 +189,9 @@ class EchoSystemSeamlessLogin {
 
         // This is the Echo360 Link for seamless login access
 	$essURL = $essURL . '?showheading=' . ($show_heading?"true":"false");
-        $essURL .= "&firstname=" . trim($userObject->firstname);
-        $essURL .= "&lastname=" . trim($userObject->lastname);
-        $essURL .= "&email=" . trim($userObject->email);
+        $essURL .= "&firstname=" . urlencode(trim($userObject->firstname));
+        $essURL .= "&lastname=" . urlencode(trim($userObject->lastname));
+        $essURL .= "&email=" . urlencode(trim($userObject->email));
         $essURL .= "&instructor=" . ($isInstructor?'true':'false');
 
         $apiurl = $this->baseURL . 'ess/personapi/v1/' . urlencode($userObject->username) . '/session';
