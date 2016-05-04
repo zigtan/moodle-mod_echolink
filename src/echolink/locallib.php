@@ -32,20 +32,18 @@ require_once("$CFG->dirroot/mod/echolink/lib.php");
 require_once("$CFG->dirroot/mod/echolink/library/ess-rest-lib.php");
 require_once("$CFG->dirroot/mod/echolink/library/ess-seamless-lib.php");
 
-$ESS_API_PATH = "ess/scheduleapi/v1/";
-
 $config = get_config('echolink');
-$ESS_URL = $config->ESS_URL . $ESS_API_PATH;
-$ESS_CONSUMER_KEY = $config->ESS_Consumer_Key;
-$ESS_CONSUMER_SECRET = $config->ESS_Consumer_Secret;
+define('ESS_API_PATH', "ess/scheduleapi/v1/");
+define('ESS_URL', $config->ESS_URL . ESS_API_PATH);
+define('ESS_CONSUMER_KEY', $config->ESS_Consumer_Key);
+define('ESS_CONSUMER_SECRET', $config->ESS_Consumer_Secret);
 
 
 //-------------------------------------------------------------
 function echolink_ess_get_rest_courses($moodleCourse = null, $defaultFilter = null) {
-        global $ESS_API_PATH, $ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET;
 
         // Retrieve ESS Course XML
-        $courseXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "courses", "", "GET", array());
+        $courseXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "courses", "", "GET", array());
 
         if($courseXML != null || $courseXML != '') {
                 $courseJSON = convertXMLtoJSON($courseXML, true, true);
@@ -73,7 +71,7 @@ function echolink_ess_get_rest_courses($moodleCourse = null, $defaultFilter = nu
                                  "<div id='courseDiv'>" .
                                    "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>" .
                                      "<div class='courseRecord' id='$id'>" .
-                                       "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" . 
+                                       "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>$name</a>" .
                                        "<div class='sectionDiv' id='$id'></div>" .
                                      "</div>" .
                                    "</div>" .
@@ -92,7 +90,7 @@ function echolink_ess_get_rest_courses($moodleCourse = null, $defaultFilter = nu
                                           "<div id='coursesData' style='margin-left: 20px; padding-bottom: 10px;'>";
                         foreach($courseData as $id => $name) {
                                 $courseHTML .= "<div class='courseRecord' id='$id'>" .
-                                                  "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>&nbsp;$name</a>" . 
+                                                  "<a href='#' class='ess_course_link' id='$id' target='_parent'><label id='$id' style='font-weight: bold;'> + </label>&nbsp;$name</a>" .
                                                   "<div class='sectionDiv' id='$id'></div>" .
                                                "</div>";
                         }
@@ -108,11 +106,10 @@ function echolink_ess_get_rest_courses($moodleCourse = null, $defaultFilter = nu
 
 
 function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = null, $defaultFilter = null) {
-        global $ESS_API_PATH, $ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET;
 
         if($moodlePerson != null && $moodlePerson != '') {
                 // Retrieve ESS Person XML by searching by their Moodle UserID (should be an Institution Staff-ID value and is used for the ESS Username).
-                $personXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "people?filter=$moodlePerson", "", "GET", array());
+                $personXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "people?filter=$moodlePerson", "", "GET", array());
 
                 if($personXML != null && $personXML != '') {
                         $personJSON = convertXMLtoJSON($personXML, true, true);
@@ -140,9 +137,9 @@ function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = nul
 	                                $personUUID = $personJSON['person']['id'];
 				} else {
 					foreach($personJSON['person'] as $person) {
-						if($person['user-name'] == "$moodlePerson") {	
+						if($person['user-name'] == "$moodlePerson") {
 							$personUUID = $person['id'];
-							break;	
+							break;
 						}
 					}
 				}
@@ -164,7 +161,7 @@ function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = nul
 						return "<div style='text-align: center;padding:10px;color:red;font-weight:bold;'>Moodle User '$moodlePerson' was not found in the configured EchoSystem Server.<br />Please contact your EchoSystem Administrators for assistance. ?</div>";
 					}
 				} else {
-	                                $sectionRoleXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "presenters/$personUUID/sections", "", "GET", array());
+	                                $sectionRoleXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "presenters/$personUUID/sections", "", "GET", array());
         	                        $sectionRoleJSON = convertXMLtoJSON($sectionRoleXML, true, true);
 
 					$courseFilterHTML = "";
@@ -235,10 +232,9 @@ function echolink_ess_get_rest_person_courses($moodlePerson, $moodleCourse = nul
 }// end of echolink_ess_get_rest_person_courses function
 
 function echolink_ess_get_rest_course_sections($essCourse) {
-        global $ESS_API_PATH, $ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET;
 
         // Retrieve ESS Section XML
-        $sectionXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "courses/$essCourse/sections", "", "GET", array());
+        $sectionXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "courses/$essCourse/sections", "", "GET", array());
 
         if($sectionXML != null || $sectionXML != '') {
                 $sectionJSON = convertXMLtoJSON($sectionXML, true, true);
@@ -278,10 +274,9 @@ function echolink_ess_get_rest_course_sections($essCourse) {
 
 
 function echolink_ess_get_rest_section($essSection) {
-        global $ESS_API_PATH, $ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET;
 
         // Retrieve ESS Section XML
-        $sectionXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "sections/$essSection", "", "GET", array());
+        $sectionXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "sections/$essSection", "", "GET", array());
 
         if($sectionXML != null || $sectionXML != '') {
                 $sectionJSON = convertXMLtoJSON($sectionXML, true, true);
@@ -304,10 +299,9 @@ function echolink_ess_get_rest_section($essSection) {
 
 
 function echolink_ess_get_rest_section_presentations($essSection) {
-        global $ESS_API_PATH, $ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET;
 
         // Retrieve ESS Section Presentation XML
-        $sectionPresentationXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "sections/$essSection/presentations", "", "GET", array());
+        $sectionPresentationXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "sections/$essSection/presentations", "", "GET", array());
 
         if($sectionPresentationXML != null || $sectionPresentationXML != '') {
                 $sectionPresentationJSON = convertXMLtoJSON($sectionPresentationXML, true, true);
@@ -351,10 +345,9 @@ function echolink_ess_get_rest_section_presentations($essSection) {
 
 
 function echolink_ess_get_rest_presentation($essPresentation) {
-        global $ESS_API_PATH, $ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET;
 
         // Retrieve ESS Section XML
-        $presentationXML = callRestService($ESS_URL, $ESS_CONSUMER_KEY, $ESS_CONSUMER_SECRET, "presentations/$essPresentation", "", "GET", array());
+        $presentationXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "presentations/$essPresentation", "", "GET", array());
 
 	return convertXMLtoJSON($presentationXML, true, false);
 }// end of echolink_ess_get_rest_presentation function
@@ -380,7 +373,7 @@ function convertXMLtoJSON($xml, $encode, $decode) {
 
 //-------------------------------------------------------------
 function echolink_ess_oauth_seamless_login($echolink) {
-        global $ESS_API_PATH, $USER;
+        global $USER;
 
         $config = get_config('echolink');
         $essURL = $config->ESS_URL;
@@ -397,7 +390,7 @@ function echolink_ess_oauth_seamless_login($echolink) {
             // we want to test for a 404
             $curl = $essSSOLogin->get_curl_with_defaults();
             $headers = $essSSOLogin->get_headers($curl, $ssoResponse['url'], 1);
-    
+
             if (!strstr($headers[0]['http'], "302")) {
                 $error_message = 'unexpected_response';
                 $e = explode(" ", $headers[0]['http'], 3);
@@ -424,7 +417,7 @@ function echolink_ess_oauth_seamless_login($echolink) {
 	    } else {
 	        print_error($error_message, 'mod_echolink', '', $error_detail);
 	    }
-	}	
+	}
 
 	return;
 }// end of echolink_ess_oauth_seamless_login function
