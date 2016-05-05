@@ -1,5 +1,5 @@
-EchoLink-Moodle-Plugin
-======================
+moodle-mod_echolink
+===================
 
 The purpose of this Echo360 Moodle Plugin is to support end-user linkage of Echo360 content in Moodle LMS.
 
