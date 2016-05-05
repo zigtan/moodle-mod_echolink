@@ -65,7 +65,7 @@ if ($ADMIN->fulltree) {
 
     //--- general settings -----------------------------------------------------------------------------------
     $settings->add(new admin_setting_configcheckbox('echolink/requiremodintro',
-        get_string('requiremodintro', 'admin'), get_string('configrequiremodintro', 'admin'), false));
+        get_string('requiremodintro', 'echolink'), get_string('configrequiremodintro', 'echolink'), false));
     $settings->add(new admin_setting_configmultiselect('echolink/displayoptions',
         get_string('displayoptions', 'echolink'), get_string('configdisplayoptions', 'echolink'),
         $defaultdisplayoptions, $displayoptions));

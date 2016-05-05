@@ -27,6 +27,7 @@
 $string['clicktoopen'] = 'Click {$a} link to open resource.';
 $string['configdisplayoptions'] = 'Select all options that should be available, existing settings are not modified. Hold CTRL key to select multiple fields.';
 $string['configframesize'] = 'When a web page or an uploaded file is displayed within a frame, this value is the height (in pixels) of the top frame (which contains the navigation).';
+$string['configrequiremodintro'] = 'Display EchoLink description below content?';
 $string['configrolesinparams'] = 'Enable if you want to include localized role names in list of available parameter variables.';
 $string['configsecretphrase'] = 'This secret phrase is used to produce encrypted code value that can be sent to some servers as a parameter.  The encrypted code is produced by an md5 value of the current user IP address concatenated with your secret phrase. ie code = md5(IP.secretphrase). Please note that this is not reliable because IP address may change and is often shared by different computers.';
 $string['contentheader'] = 'Content';
@@ -73,6 +74,7 @@ $string['printheading'] = 'Display EchoLink name';
 $string['printheadingexplain'] = 'Display EchoLink name above content? Some display types may not display EchoLink name even if enabled.';
 $string['printintro'] = 'Display EchoLink description';
 $string['printintroexplain'] = 'Display EchoLink description below content? Some display types may not display description even if enabled.';
+$string['requiremodintro'] = 'Require activity description';
 $string['rolesinparams'] = 'Include role names in parameters';
 $string['serverecholink'] = 'Server EchoLink';
 $string['echolink:addinstance'] = 'Add a new EchoLink resource';
