@@ -327,7 +327,7 @@ function echolink_ess_get_rest_section_presentations($essSection) {
                                         $presentationData[$presentation['id']] = date("Y-m-d H:i", strtotime($presentation['start-time'])) . " ||--|| " . $presentation['title'];
                                 }
                         }
-                        asort($presentationData);
+                        arsort($presentationData);
 
                         $presentationHTML = "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'>";
                         foreach($presentationData as $id => $title) {
