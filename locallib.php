@@ -390,6 +390,7 @@ function echolink_ess_oauth_seamless_login($echolink) {
             // we want to test for a 404
             $curl = $essSSOLogin->get_curl_with_defaults();
             $headers = $essSSOLogin->get_headers($curl, $ssoResponse['url'], 1);
+            $error_message = '';
 
             if (!strstr($headers[0]['http'], "302")) {
                 $error_message = 'unexpected_response';
