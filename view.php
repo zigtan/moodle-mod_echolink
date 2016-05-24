@@ -47,8 +47,14 @@ require_course_login($course, true, $cm);
 $context = context_module::instance($cm->id);
 require_capability('mod/echolink:view', $context);
 
-add_to_log($course->id, 'echolink', 'view', 'view.php?id='.$cm->id, $echolink->id, $cm->id);
-
+// Log this request.
+$params = array(
+    'objectid' => $course->id,
+    'context' => $context
+);
+$event = \mod_echolink\event\course_module_viewed::create($params);
+$event->add_record_snapshot('echolink', $echolink);
+$event->trigger();
 
 // Update 'viewed' state if required by completion system
 $completion = new completion_info($course);
