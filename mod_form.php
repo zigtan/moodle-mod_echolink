@@ -71,6 +71,7 @@ class mod_echolink_mod_form extends moodleform_mod {
         $mform->setType('externalecholink', PARAM_URL);
 	
         $mform->addElement('hidden', 'previousecholink', '', array('id'=>'previousecholink'));
+        $mform->setType('previousecholink', PARAM_URL);
 
 	$this->add_intro_editor($config->requiremodintro);
 
