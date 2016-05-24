@@ -299,48 +299,47 @@ function echolink_ess_get_rest_section($essSection) {
 
 
 function echolink_ess_get_rest_section_presentations($essSection) {
+    // Retrieve ESS Section Presentation XML
+    $sectionPresentationXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "sections/$essSection/presentations", "", "GET", array());
 
-        // Retrieve ESS Section Presentation XML
-        $sectionPresentationXML = callRestService(ESS_URL, ESS_CONSUMER_KEY, ESS_CONSUMER_SECRET, "sections/$essSection/presentations", "", "GET", array());
+    if($sectionPresentationXML != null || $sectionPresentationXML != '') {
+        $sectionPresentationJSON = convertXMLtoJSON($sectionPresentationXML, true, true);
 
-        if($sectionPresentationXML != null || $sectionPresentationXML != '') {
-                $sectionPresentationJSON = convertXMLtoJSON($sectionPresentationXML, true, true);
+        if($sectionPresentationJSON['total-results'] == 0) {
+            return "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'><div class='presentationRecord'>&#8226; No Echo360 Presentations are currently available.</div></div>";
+        } else if($sectionPresentationJSON['total-results'] == 1) {
+            if($sectionPresentationJSON['presentation']['status'] == "presentation-status-available") {
+                $id = $sectionPresentationJSON['presentation']['id'];
+                $time = date("Y-m-d H:i", strtotime($sectionPresentationJSON['presentation']['start-time']));
+                $title = $sectionPresentationJSON['presentation']['title'];
 
-                if($sectionPresentationJSON['total-results'] == 0) {
-                        return "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'><div class='presentationRecord'>&#8226; No Echo360 Presentations are currently available.</div></div>";
-                } else if($sectionPresentationJSON['total-results'] == 1) {
-			if($sectionPresentationJSON['presentation']['status'] == "presentation-status-available") {
-				$id = $sectionPresentationJSON['presentation']['id'];
-				$time = date("Y-m-d H:i", strtotime($sectionPresentationJSON['presentation']['start-time']));
-				$title = $sectionPresentationJSON['presentation']['title'];
-
-	                        return "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'>" .
-	                                   "<div class='presentationRecord'>&#8226; <span style='color: gray;'>$time</span> - <i><a href='#' class='ess_presentation_link' id='$id'>$title</a></i>";
-        	                       "</div>";
-			} else {
-                        	return "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'><div class='presentationRecord'>&#8226; No Echo360 Presentations are currently available.</div></div>";
-			}
-                } else {
-                        $presentationData = array();
-                        foreach($sectionPresentationJSON['presentation'] as $presentation) {
-                                if($presentation['status'] == "presentation-status-available") {
-                                        $presentationData[$presentation['id']] = date("Y-m-d H:i", strtotime($presentation['start-time'])) . " ||--|| " . $presentation['title'];
-                                }
-                        }
-                        arsort($presentationData);
-
-                        $presentationHTML = "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'>";
-                        foreach($presentationData as $id => $title) {
-                                $_title = explode(" ||--|| ", $title);
-                                $presentationHTML .= "<div class='presentationRecord'>&#8226; <span style='color: gray;'>" . $_title[0] . "</span> - <i><a href='#' class='ess_presentation_link' id='$id'>" . $_title[1] . "</a></i>";
-                        }
-                        $presentationHTML .= "</div>";
-
-                        return $presentationHTML;
-                }
+                return "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'>" .
+                        "<div class='presentationRecord'>&#8226; <span style='color: gray;'>$time</span> - <i><a href='#' class='ess_presentation_link' id='$id'>$title</a></i>";
+                        "</div>";
+            } else {
+                return "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'><div class='presentationRecord'>&#8226; No Echo360 Presentations are currently available.</div></div>";
+            }
         } else {
-                // Do nothing - error message would have already been displayed
+            $presentationData = array();
+            foreach($sectionPresentationJSON['presentation'] as $presentation) {
+                if($presentation['status'] == "presentation-status-available") {
+                    $presentationData[$presentation['id']] = date("Y-m-d H:i", strtotime($presentation['start-time'])) . " ||--|| " . $presentation['title'];
+                }
+            }
+            arsort($presentationData);
+
+            $presentationHTML = "<div id='presentationLinkData' style='margin-left: 40px; padding-bottom: 5px;'>";
+            foreach($presentationData as $id => $title) {
+                $_title = explode(" ||--|| ", $title);
+                $presentationHTML .= "<div class='presentationRecord'>&#8226; <span style='color: gray;'>" . $_title[0] . "</span> - <i><a href='#' class='ess_presentation_link' id='$id'>" . $_title[1] . "</a></i>";
+            }
+            $presentationHTML .= "</div>";
+
+            return $presentationHTML;
         }
+    } else {
+    // Do nothing - error message would have already been displayed
+    }
 }// end of echolink_ess_get_rest_section_presentations function
 
 
