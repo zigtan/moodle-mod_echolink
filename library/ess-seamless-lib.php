@@ -188,7 +188,7 @@ class EchoSystemSeamlessLogin {
     public function generate_sso_url($essURL, $userObject, $isInstructor, $showHeading) {
 
         // This is the Echo360 Link for seamless login access
-	$essURL = $essURL . '?showheading=' . ($show_heading?"true":"false");
+        $essURL = $essURL . '?showheading=' . ($showHeading?"true":"false");
         $essURL .= "&firstname=" . urlencode(trim($userObject->firstname));
         $essURL .= "&lastname=" . urlencode(trim($userObject->lastname));
         $essURL .= "&email=" . urlencode(trim($userObject->email));
