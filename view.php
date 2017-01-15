@@ -54,7 +54,7 @@ add_to_log($course->id, 'echolink', 'view', 'view.php?id='.$cm->id, $echolink->i
 $completion = new completion_info($course);
 $completion->set_module_viewed($cm);
 
-//$PAGE->set_echolink('/mod/echolink/view.php', array('id' => $cm->id));				// Problematic Moodle call... need to disable for now
+$PAGE->set_url('/mod/echolink/view.php', array('id' => $cm->id));
 
 // Make sure Echo360 Link exists before generating output - some older sites may contain empty echolinks
 // Do not use PARAM_URL here, it is too strict and does not support general URIs!
