@@ -373,53 +373,54 @@ function convertXMLtoJSON($xml, $encode, $decode) {
 
 //-------------------------------------------------------------
 function echolink_ess_oauth_seamless_login($echolink) {
-        global $USER;
+    global $USER;
 
-        $config = get_config('echolink');
-        $essURL = $config->ESS_URL;
-        $essConsumerKey = $config->ESS_Consumer_Key;
-        $essConsumerSecret = $config->ESS_Consumer_Secret;
-	$realm = "";
+    $config = get_config('echolink');
+    $essURL = $config->ESS_URL;
+    $essConsumerKey = $config->ESS_Consumer_Key;
+    $essConsumerSecret = $config->ESS_Consumer_Secret;
+    $realm = "";
 
-	$isInstructor = true;
+    $isInstructor = true;
 
-	$essSSOLogin = new EchoSystemSeamlessLogin($essURL, $essConsumerKey, $essConsumerSecret, $realm);
-	$ssoResponse = $essSSOLogin->generate_sso_url($echolink, $USER, $isInstructor, true);
+    $essSSOLogin = new EchoSystemSeamlessLogin($essURL, $essConsumerKey, $essConsumerSecret, $realm);
+    $ssoResponse = $essSSOLogin->generate_sso_url($echolink, $USER, $isInstructor, true);
 
-        if($ssoResponse['success'] == true) {
-            // we want to test for a 404
-            $curl = $essSSOLogin->get_curl_with_defaults();
-            $headers = $essSSOLogin->get_headers($curl, $ssoResponse['url'], 1);
+    if($ssoResponse['success'] == true) {
+        // we want to test for a 404
+        $curl = $essSSOLogin->get_curl_with_defaults();
+        $headers = $essSSOLogin->get_headers($curl, $ssoResponse['url'], 1);
+        $error_message = '';
 
-            if (!strstr($headers[0]['http'], "302")) {
-                $error_message = 'unexpected_response';
-                $e = explode(" ", $headers[0]['http'], 3);
-                $error_detail = $e[2];
-            } else if (strstr($headers[1]['http'], "404")) {
-                $error_message = 'not_found_response';
-                $e = explode(" ", $headers[1]['http'], 3);
-                $error_detail = $e[2];
-            } else if (strstr($headers[1]['http'], "403")) {
-                $error_message = 'forbidden_response';
-                $e = explode(" ", $headers[1]['http'], 3);
-                $error_detail = $e[2];
-            } else if (!strstr($headers[1]['http'], "200")) {
-                $error_message = 'unexpected_response';
-                $e = explode(" ", $headers[1]['http'], 3);
-                $error_detail = $e[2];
-            }
-            curl_close($curl);
+        if (!strstr($headers[0]['http'], "302")) {
+            $error_message = 'unexpected_response';
+            $e = explode(" ", $headers[0]['http'], 3);
+            $error_detail = $e[2];
+        } else if (strstr($headers[1]['http'], "404")) {
+            $error_message = 'not_found_response';
+            $e = explode(" ", $headers[1]['http'], 3);
+            $error_detail = $e[2];
+        } else if (strstr($headers[1]['http'], "403")) {
+            $error_message = 'forbidden_response';
+            $e = explode(" ", $headers[1]['http'], 3);
+            $error_detail = $e[2];
+        } else if (!strstr($headers[1]['http'], "200")) {
+            $error_message = 'unexpected_response';
+            $e = explode(" ", $headers[1]['http'], 3);
+            $error_detail = $e[2];
+        }
+        curl_close($curl);
 
-	    if ($error_message == "") {
-	        // All good - but we already used the request - need to sign again (generate a new nonce)
-	        $ssoResponse = $essSSOLogin->generate_sso_url($echolink, $USER, $isInstructor, true);
-	        header("Location:" . $ssoResponse['url']);
-	    } else {
-	        print_error($error_message, 'mod_echolink', '', $error_detail);
-	    }
-	}
+        if ($error_message == "") {
+            // All good - but we already used the request - need to sign again (generate a new nonce)
+            $ssoResponse = $essSSOLogin->generate_sso_url($echolink, $USER, $isInstructor, true);
+            header("Location:" . $ssoResponse['url']);
+        } else {
+            print_error($error_message, 'mod_echolink', '', $error_detail);
+        }
+    }
 
-	return;
+    return;
 }// end of echolink_ess_oauth_seamless_login function
 
 //-------------------------------------------------------------
