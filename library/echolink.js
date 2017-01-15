@@ -59,6 +59,8 @@ M.mod_echolink.init = function(Y, args) {
 
 
 	function essCourseEventHandler(e) {
+		e.preventDefault();
+
 		var echolinkEventURL = essCourseEventURL + e.target.get('id');
 		var callbackHandler = {
 			success: function(o) {
@@ -98,6 +100,8 @@ M.mod_echolink.init = function(Y, args) {
 
 
 	function essSectionEventHandler(e) {
+		e.preventDefault();
+
 		var echolinkEventURL = essSectionEventURL + e.target.get('id');
 
 		var callbackHandler = {
@@ -138,6 +142,7 @@ M.mod_echolink.init = function(Y, args) {
 
 
 	function essECPPresentationEventHandler(e) {
+		e.preventDefault();
 
 		// Check if selected Echo360 Link is for ECP or Presentation
 		if(e.target.get('id').indexOf('ess/portal/section/') != -1) {			// ESS ECP Link
